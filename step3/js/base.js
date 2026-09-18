@@ -1,9 +1,7 @@
 //variabili di configurazione
 let radius = 200;
-let oscillationRadius = 15;
 let rotationSpeed = (Math.PI / 180) * 1; //degree per frame
-let oscilationAngSpeed = (Math.PI / 180) * 20; //degree per frame
-let spawnTime = 20;
+let spawnTime = 50;
 
 //variabili applicative
 let nodeArray = [];
@@ -13,16 +11,9 @@ let spawnInterval = null;
 function anima() {
     for (let node of nodeArray) {
         node.angle += rotationSpeed;
-        node.phase += oscilationAngSpeed;
 
-        node.position.x =
-            canvas.width / 2 +
-            Math.cos(node.angle) *
-                (radius + Math.sin(node.phase) * oscillationRadius);
-        node.position.y =
-            canvas.height / 2 +
-            Math.sin(node.angle) *
-                (radius + Math.sin(node.phase) * oscillationRadius);
+        node.position.x = canvas.width / 2 + Math.cos(node.angle) * radius;
+        node.position.y = canvas.height / 2 + Math.sin(node.angle) * radius;
     }
 }
 
@@ -52,19 +43,22 @@ window.addEventListener("load", function () {
     animation = requestAnimationFrame(frame);
 });
 
-function spawnNode() {
-    let newNode = new Node(new Point(200, 200), Color.random());
-
-    newNode.angle = -Math.PI / 2;
-    newNode.phase = 0;
-
-    nodeArray.push(newNode);
-}
-
 window.addEventListener("mousedown", function () {
+    spawnNode();
     spawnInterval = setInterval(spawnNode, spawnTime);
 });
 
 window.addEventListener("mouseup", function () {
     clearInterval(spawnInterval);
 });
+
+function spawnNode() {
+    let newNode = new Node(
+        new Point(canvas.width / 2, canvas.height / 2),
+        Color.random(),
+    );
+
+    newNode.angle = -Math.PI / 2;
+
+    nodeArray.push(newNode);
+}
