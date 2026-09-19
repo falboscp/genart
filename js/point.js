@@ -13,14 +13,14 @@ function Point(x, y) {
 
 Point.prototype = {
     distance: function (
-        p //how fare are me and p?
+        p, //how fare are me and p?
     ) {
         if (p.__proto__ != Point.prototype) throw "invalid argument";
         return Math.sqrt(Math.pow(this.x - p.x, 2) + Math.pow(this.y - p.y, 2));
     },
 
     distances: function (
-        p //how far are my coordinate from p's one?
+        p, //how far are my coordinate from p's one?
     ) {
         if (p.__proto__ != Point.prototype) throw "invalid argument";
         return new Point(Math.abs(this.x - p.x), Math.abs(this.y - p.y));
@@ -48,14 +48,14 @@ Point.prototype = {
     },
 
     offset: function (
-        p //where am I relative to p?
+        p, //where am I relative to p?
     ) {
         if (p.__proto__ != Point.prototype) throw "invalid argument";
         return new Point(this.x - p.x, this.y - p.y);
     },
 
     middle: function (
-        p //middle point between me and p
+        p, //middle point between me and p
     ) {
         if (p.__proto__ != Point.prototype) throw "invalid argument";
         return new Point((this.x + p.x) / 2, (this.y + p.y) / 2);
@@ -63,7 +63,7 @@ Point.prototype = {
 
     interpolation: function (
         point,
-        value //value from 0 (this value) and 1 (point value)
+        value, //value from 0 (this value) and 1 (point value)
     ) {
         let dif = [point.x - this.x, point.y - this.y];
         return new Point(this.x + dif[0] * value, this.y + dif[1] * value);
@@ -76,7 +76,7 @@ Point.prototype = {
     },
 
     angle: function (
-        point //qual è l'angolo fra me e point? (io origine)
+        point, //qual è l'angolo fra me e point? (io origine)
     ) {
         let distances = point.offset(this);
         let tangent = distances.y / distances.x;
@@ -91,57 +91,17 @@ Point.prototype = {
         this.x = x;
         this.y = y;
     },
-
-    //TODO: fix
-    specchia: function (
-        p1,
-        p2 //dove sono io specchiato rispetto alla segmento di punti p1 e p2?
-    ) {
-        let distance;
-
-        //retta verticale
-        if (p1.x == p2.x) {
-            distance = p1.x - this.x;
-            return new Point(this.x + distance * 2, this.y);
-        }
-
-        //retta orizzontale
-        if (p1.y == p2.y) {
-            distance = p1.y - this.y;
-            return new Point(this.x, this.y + distance * 2);
-        }
-
-        //retta obliqua
-        let a = 1 / (p2.x - p1.x);
-        let b = -1 / (p2.y - p1.y);
-        let c = p1.y / (p2.y - p1.y) - p1.x / (p2.x - p1.x);
-        let angoloRetta = Math.atan((p1.y - p2.y) / (p1.x - p2.x));
-        let angoloDistancedistance = Math.abs(angoloRetta + Math.PI / 2);
-
-        distance =
-            Math.abs(a * this.x + b * this.y + c) / Math.sqrt(a * a + b * b);
-
-        let segno = {
-            x: (-this.y * b - c) / a >= this.x ? 1 : -1,
-            y: (-this.x * a - c) / b >= this.y ? 1 : -1,
-        };
-
-        return new Point(
-            this.x + distance * Math.cos(angoloDistancedistance) * segno.x,
-            this.y + distance * Math.sin(angoloDistancedistance) * segno.y
-        );
-    },
 };
 
 Point.random = function (
     minX = 0,
     maxX = canvas.width,
     minY = 0,
-    maxY = canvas.height
+    maxY = canvas.height,
 ) {
     return new Point(
         Math.floor(minX.interpolation(maxX, Math.random())),
-        Math.floor(minY.interpolation(maxY, Math.random()))
+        Math.floor(minY.interpolation(maxY, Math.random())),
     );
 };
 

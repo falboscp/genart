@@ -34,12 +34,8 @@ function movimento(event) {
     mouse.offset = mouse.position.offset(old);
 }
 
-window.addEventListener(
-    //TODO: find workaround to state loss
-    "resize",
-    function () {
-        //canvas resize
-        canvas.width = document.body.clientWidth;
-        canvas.height = document.body.clientHeight;
-    },
-);
+window.addEventListener("resize", function () {
+    //canvas resize
+    canvas.width = document.body.clientWidth;
+    canvas.height = document.body.clientHeight;
+});
